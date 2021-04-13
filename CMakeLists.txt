@@ -2,6 +2,16 @@ cmake_minimum_required(VERSION 3.16)
 
 project("LearnOpenGL")
 
+# Use the latest version of C and C++
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+
+# Tell CMake where to find the scripts to find the depedencies
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}/cmake")
+
+# Find GLAD and put it into it's own library
+find_package("GLAD")
+
 add_executable("learn-opengl")
 
 add_subdirectory("src")
