@@ -13,6 +13,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package("GLAD")
 add_library("glad" "${GLAD_SOURCE_FILE}")
 
+find_package("GLFW")
+
 add_executable("learn-opengl")
 
 add_subdirectory("src")
