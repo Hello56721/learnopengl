@@ -1,1 +1,17 @@
+# Output Executables
+learn-opengl
+learn-opengl.exe
+learn-opengl.app
 
+# Ninja clutters
+build.ninja
+.ninja_deps
+.ninja_log
+
+# CMake Clutters
+cmake_install.cmake 
+CMakeCache.txt
+CMakeFiles
+
+# Visual Studio Code editor configuration files
+.vscode/*
