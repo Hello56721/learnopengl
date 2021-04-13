@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}/cmake")
 
 # Find GLAD and put it into it's own library
 find_package("GLAD")
+add_library("glad" "${GLAD_SOURCE_FILE}")
 
 add_executable("learn-opengl")
 
