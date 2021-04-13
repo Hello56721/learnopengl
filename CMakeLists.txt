@@ -32,4 +32,4 @@ add_executable("learn-opengl")
 add_subdirectory("src")
 
 # Link the libraries
-target_link_libraries("learn-opengl" "${GLFW_LIBRARY}" "Xorg" "Xlib" "GL")
+target_link_libraries("learn-opengl" "glad" "${GLFW_LIBRARY}" "GL" "X11" "pthread" "Xrandr" "dl")
