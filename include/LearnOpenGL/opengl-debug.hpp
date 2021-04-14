@@ -1,3 +1,6 @@
+#ifndef CD08BFE2_4D4E_4341_8155_E5289DFACC9A
+#define CD08BFE2_4D4E_4341_8155_E5289DFACC9A
+
 #include <iostream>
 #include <string>
 #include <string_view>
@@ -23,3 +26,6 @@ namespace OpenGLDebug {
         return result;
     }
 }
+
+
+#endif /* CD08BFE2_4D4E_4341_8155_E5289DFACC9A */
