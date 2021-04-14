@@ -117,3 +117,7 @@ void Shader::setUniform(std::string_view name, int value) const {
 void Shader::setUniform(std::string_view name, float value) const {
     glCall(glUniform1f, glCallR(glGetUniformLocation, mID, name.data()), value);
 }
+
+Shader::~Shader() {
+    glCall(glDeleteProgram, mID);
+}
