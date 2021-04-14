@@ -20,6 +20,8 @@ struct {
 unsigned int wWidth;
 unsigned int wHeight;
 
+using OpenGLDebug::glCall;
+
 int main(int argl, char** argv) {
     // Put all of the command line arguments in a vector
     for (unsigned int i = 0; i < argl; ++i) {
@@ -65,7 +67,7 @@ int main(int argl, char** argv) {
     }
     
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
