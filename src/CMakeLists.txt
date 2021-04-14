@@ -1,2 +1,6 @@
-target_sources("learn-opengl" PRIVATE "learn-opengl.cpp")
-target_sources("learn-opengl" PRIVATE "opengl-debug.cpp")
+target_sources(
+    "learn-opengl" PRIVATE 
+    "learn-opengl.cpp"
+    "opengl-debug.cpp"
+    "shader-class.cpp"
+)
