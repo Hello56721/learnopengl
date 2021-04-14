@@ -20,7 +20,7 @@ namespace OpenGLDebug {
     
     // Same as the function above, but this one returns a value
     template <typename...ArgsType, typename functionType>
-    inline auto glCall(functionType call, ArgsType...args) {
+    inline auto glCallR(functionType call, ArgsType...args) {
         auto result = call(args...);
         printErrors(__FILE__, __LINE__, __func__);
         return result;
