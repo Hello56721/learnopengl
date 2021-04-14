@@ -25,7 +25,7 @@ add_library("glad" "${GLAD_SOURCE_FILE}")
 find_package("GLFW")
 
 # Add the include directories
-include_directories("${GLAD_INCLUDE_DIR}" "${GLFW_INCLUDE_DIR}")
+include_directories("${GLAD_INCLUDE_DIR}" "${GLFW_INCLUDE_DIR}" "include")
 
 add_executable("learn-opengl")
 
