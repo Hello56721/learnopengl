@@ -20,8 +20,6 @@ struct {
 unsigned int wWidth;
 unsigned int wHeight;
 
-using OpenGLDebug::glCall;
-
 int main(int argl, char** argv) {
     // Put all of the command line arguments in a vector
     for (unsigned int i = 0; i < argl; ++i) {
