@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <LearnOpenGL/opengl-debug.hpp>
+
 // A vector of command line options
 extern std::vector<std::string> commandLineArguments;
 std::vector<std::string> commandLineArguments;
