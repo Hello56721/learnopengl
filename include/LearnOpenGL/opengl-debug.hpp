@@ -20,14 +20,14 @@ namespace OpenGLDebug {
     template <typename...ArgsType, typename functionType>
     void glCallImpl(std::string_view file, int line, std::string_view func, functionType call, ArgsType...args) {
         call(args...);
-        printErrors(__FILE__, __LINE__, __func__);
+        printErrors(file, line, __func__);
     }
     
     // Same as the function above, but this one returns a value
     template <typename...ArgsType, typename functionType>
     auto glCallRImpl(std::string_view file, int line, std::string_view func, functionType call, ArgsType...args) {
         auto result = call(args...);
-        printErrors(__FILE__, __LINE__, __func__);
+        printErrors(file, line, __func__);
         return result;
     }
 }

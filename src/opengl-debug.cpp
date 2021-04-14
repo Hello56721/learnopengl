@@ -6,6 +6,10 @@
 
 #include <LearnOpenGL/opengl-debug.hpp>
 
+static void debug_break() {
+    return;
+}
+
 // Print out all of the errors generated from the last OpenGL call
 void OpenGLDebug::printErrors(std::string_view file, int line, std::string_view func) {
     unsigned int errorCode = 0;
@@ -39,6 +43,6 @@ void OpenGLDebug::printErrors(std::string_view file, int line, std::string_view 
         }
 
         std::cerr << "[OPENGL ERROR]: " << errorCode << " " << error << " at " << file << "[" << line << "]:" << func << "()" << std::endl;
-        ;
+        debug_break();
     }
 }

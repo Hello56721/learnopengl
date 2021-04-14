@@ -65,7 +65,7 @@ int main(int argl, char** argv) {
     }
     
     while (!glfwWindowShouldClose(window)) {
-        glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glCall(glClear, GL_INT);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
