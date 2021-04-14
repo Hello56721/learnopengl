@@ -30,6 +30,7 @@ include_directories("${GLAD_INCLUDE_DIR}" "${GLFW_INCLUDE_DIR}" "include")
 add_executable("learn-opengl")
 
 add_subdirectory("src")
+add_subdirectory("include")
 
 # Link the libraries
 target_link_libraries("learn-opengl" "glad" "${GLFW_LIBRARY}" "GL" "X11" "pthread" "Xrandr" "dl")

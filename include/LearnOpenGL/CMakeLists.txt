@@ -1,0 +1,1 @@
+target_sources("learn-opengl" PRIVATE "opengl-debug.hpp")
