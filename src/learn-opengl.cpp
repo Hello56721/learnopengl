@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include <LearnOpenGL/opengl-debug.hpp>
+#include <LearnOpenGL/shader-class.hpp>
 
 // A vector of command line options
 extern std::vector<std::string> commandLineArguments;
@@ -64,12 +65,50 @@ int main(int argl, char** argv) {
         return -1;
     }
     
+    float vertices[] {
+         0.5f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
+    };
+    unsigned int indices[] {
+        0, 1, 2,
+        0, 3, 2
+    };
+    
+    Shader shader("../shaders/basic/vertex.glsl", "../shaders/basic/fragment.glsl");
+    
+    unsigned int vao;
+    glCall(glGenVertexArrays, 1, &vao);
+    glCall(glBindVertexArray, vao);
+    
+    unsigned int vbo;
+    glCall(glGenBuffers, 1, &vbo);
+    glCall(glBindBuffer, GL_ARRAY_BUFFER, vbo);
+    glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    unsigned int ebo;
+    glCall(glGenBuffers, 1, &ebo);
+    glCall(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glCall(glBufferData, GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    
+    glCall(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glCall(glEnableVertexAttribArray, 0);
+    
     while (!glfwWindowShouldClose(window)) {
         glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        shader.use();
+        glCall(glBindVertexArray, vao);
+        glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    
+    glCall(glDeleteBuffers, 1, &vbo);
+    glCall(glDeleteBuffers, 1, &ebo);
+    glCall(glDeleteVertexArrays, 1, &vao);
     
     glfwTerminate();
     return 0;
