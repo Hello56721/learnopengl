@@ -46,6 +46,8 @@ int main(int argl, char** argv) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
+    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+    
     GLFWmonitor* monitor = nullptr;
     const GLFWvidmode* videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     
@@ -146,6 +148,7 @@ int main(int argl, char** argv) {
     
     view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
     
+    glfwShowWindow(window);
     while (!glfwWindowShouldClose(window)) {
         glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
