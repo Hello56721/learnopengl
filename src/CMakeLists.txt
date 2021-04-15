@@ -3,4 +3,5 @@ target_sources(
     "learn-opengl.cpp"
     "opengl-debug.cpp"
     "shader-class.cpp"
+    "stb_image.c"
 )
