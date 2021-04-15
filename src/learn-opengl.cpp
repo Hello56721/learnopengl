@@ -147,8 +147,8 @@ int main(int argl, char** argv) {
     glCall(glGenTextures, 1, &texture);
     glCall(glBindTexture, GL_TEXTURE_2D, texture);
     
-    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     
@@ -162,6 +162,31 @@ int main(int argl, char** argv) {
         glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glCall(glGenerateMipmap, GL_TEXTURE_2D);
     }
+    
+    stbi_image_free(data);
+    
+    // ##################################################################################################
+    
+    unsigned int texture2;
+    glCall(glGenTextures, 1, &texture2);
+    glCall(glBindTexture, GL_TEXTURE_2D, texture);
+    
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    // Load the face texture
+    data = stbi_load("../textures/container.jpg", &width, &height, &nrChannels, 0);
+    // Check if the data is valid
+    if (data == nullptr) {
+        std::cerr << "[ERROR]: Couldn't find or load ../textures/container.jpg" << std::endl;
+    } else {
+        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glCall(glGenerateMipmap, GL_TEXTURE_2D);
+    }
+    
+    stbi_image_free(data);
     
     glm::mat4 model(1.0);
     glm::mat4 view(1.0);
@@ -188,7 +213,10 @@ int main(int argl, char** argv) {
         shader.setUniform("view", view);
         shader.setUniform("projection", projection);
         
+        glCall(glActiveTexture, GL_TEXTURE0);
         glCall(glBindTexture, GL_TEXTURE_2D, texture);
+        glCall(glActiveTexture, GL_TEXTURE1);
+        glCall(glBindTexture, GL_TEXTURE_2D, texture2);
         
         glCall(glBindVertexArray, vao);
         glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
