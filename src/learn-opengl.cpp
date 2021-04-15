@@ -5,6 +5,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <LearnOpenGL/opengl-debug.hpp>
 #include <LearnOpenGL/shader-class.hpp>
 
@@ -95,10 +98,23 @@ int main(int argl, char** argv) {
     glCall(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glCall(glEnableVertexAttribArray, 0);
     
+    glm::mat4 model(1.0);
+    glm::mat4 view(1.0);
+    glm::mat4 projection(1.0);
+    
+    view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
+    
     while (!glfwWindowShouldClose(window)) {
         glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
+        projection = glm::perspective(glm::radians(45.0), static_cast<double>(wWidth) / static_cast<double>(wHeight), 0.1, 100.0);
+        
         shader.use();
+        
+        shader.setUniform("model", model);
+        shader.setUniform("view", view);
+        shader.setUniform("projection", projection);
+        
         glCall(glBindVertexArray, vao);
         glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         
