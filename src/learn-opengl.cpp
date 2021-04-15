@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <stb_image.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -68,11 +70,19 @@ int main(int argl, char** argv) {
         return -1;
     }
     
-    float vertices[] {
-         0.5f,  0.5f, 0.0f,
+    float positions[] {
+        // positions
+         0.5f,  0.5f, 0.0f, 
          0.5f, -0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+        -0.5f,  0.5f, 0.0f,
+    };
+    float textureCoordinates[] {
+        // texture coordinates
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+        0.0f, 1.0f
     };
     unsigned int indices[] {
         0, 1, 2,
@@ -85,10 +95,10 @@ int main(int argl, char** argv) {
     glCall(glGenVertexArrays, 1, &vao);
     glCall(glBindVertexArray, vao);
     
-    unsigned int vbo;
-    glCall(glGenBuffers, 1, &vbo);
-    glCall(glBindBuffer, GL_ARRAY_BUFFER, vbo);
-    glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    unsigned int vboPos;
+    glCall(glGenBuffers, 1, &vboPos);
+    glCall(glBindBuffer, GL_ARRAY_BUFFER, vboPos);
+    glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
     
     unsigned int ebo;
     glCall(glGenBuffers, 1, &ebo);
@@ -97,6 +107,34 @@ int main(int argl, char** argv) {
     
     glCall(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glCall(glEnableVertexAttribArray, 0);
+    
+    unsigned int vboTexCoords;
+    glCall(glGenBuffers, 1, &vboTexCoords);
+    glCall(glBindBuffer, GL_ARRAY_BUFFER, vboTexCoords);
+    glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(textureCoordinates), textureCoordinates, GL_STATIC_DRAW);
+    
+    glCall(glVertexAttribPointer, 1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glCall(glEnableVertexAttribArray, 1);
+    
+    unsigned int texture;
+    glCall(glGenTextures, 1, &texture);
+    glCall(glBindTexture, GL_TEXTURE_2D, texture);
+    
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    // Load the container texture
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("../textures/container.jpg", &width, &height, &nrChannels, 0);
+    // Check if the data is valid
+    if (data == nullptr) {
+        std::cerr << "[ERROR]: Couldn't find or load ../textures/container.jpg" << std::endl;
+    } else {
+        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glCall(glGenerateMipmap, GL_TEXTURE_2D);
+    }
     
     glm::mat4 model(1.0);
     glm::mat4 view(1.0);
@@ -115,6 +153,8 @@ int main(int argl, char** argv) {
         shader.setUniform("view", view);
         shader.setUniform("projection", projection);
         
+        glCall(glBindTexture, GL_TEXTURE_2D, texture);
+        
         glCall(glBindVertexArray, vao);
         glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         
@@ -122,7 +162,8 @@ int main(int argl, char** argv) {
         glfwPollEvents();
     }
     
-    glCall(glDeleteBuffers, 1, &vbo);
+    glCall(glDeleteBuffers, 1, &vboPos);
+    glCall(glDeleteBuffers, 1, &vboTexCoords);
     glCall(glDeleteBuffers, 1, &ebo);
     glCall(glDeleteVertexArrays, 1, &vao);
     
