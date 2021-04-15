@@ -118,6 +118,10 @@ void Shader::setUniform(std::string_view name, float value) const {
     glCall(glUniform1f, glCallR(glGetUniformLocation, mID, name.data()), value);
 }
 
+void Shader::setUniform(std::string_view name, glm::mat4 value) const {
+    glCall(glUniformMatrix4fv, glCallR(glGetUniformLocation, mID, name.data()), 1, GL_FALSE, glm::value_ptr(value));
+}
+
 Shader::~Shader() {
     glCall(glDeleteProgram, mID);
 }

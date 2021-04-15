@@ -11,6 +11,9 @@
 #include <string>
 #include <string_view>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class Shader {
 private:
     // The ID of the shader object
@@ -25,6 +28,7 @@ public:
     void setUniform(std::string_view name, bool value) const;
     void setUniform(std::string_view name, int value) const ;
     void setUniform(std::string_view name, float value) const;
+    void setUniform(std::string_view name, glm::mat4 value) const;
     // Getter for the id
     unsigned int getID() const;
     // Destructor
