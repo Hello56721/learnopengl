@@ -26,8 +26,10 @@ find_package("GLFW")
 
 find_package("GLM")
 
+find_package("STB")
+
 # Add the include directories
-include_directories("${GLAD_INCLUDE_DIR}" "${GLFW_INCLUDE_DIR}" "${GLM_INCLUDE_DIR}" "include")
+include_directories("${GLAD_INCLUDE_DIR}" "${GLFW_INCLUDE_DIR}" "${GLM_INCLUDE_DIR}" "${STB_INCLUDE_DIR}" "include")
 
 add_executable("learn-opengl")
 
