@@ -26,6 +26,8 @@ struct {
 unsigned int wWidth;
 unsigned int wHeight;
 
+static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+
 int main(int argl, char** argv) {
     // Put all of the command line arguments in a vector
     for (unsigned int i = 0; i < argl; ++i) {
@@ -69,6 +71,8 @@ int main(int argl, char** argv) {
         glfwTerminate();
         return -1;
     }
+    
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     
     float positions[] {
         // positions
@@ -169,4 +173,10 @@ int main(int argl, char** argv) {
     
     glfwTerminate();
     return 0;
+}
+
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+    wWidth = width;
+    wHeight = height;
+    glCall(glViewport, 0, 0, wWidth, wHeight);
 }
