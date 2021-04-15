@@ -41,6 +41,8 @@ int main(int argl, char** argv) {
         }
     }
     
+    std::cout << "[INFO]: Creating Window..." << std::endl;
+    
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -74,7 +76,11 @@ int main(int argl, char** argv) {
         return -1;
     }
     
+    std::cout << "[INFO]: Window has been created. Using OpenGL " << glCallR(glGetString, GL_VERSION) << std::endl;
+    
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+    
+    std::cout << "[INFO]: Initializing the program. Please wait." << std::endl;
     
     float positions[] {
         // positions
@@ -147,6 +153,8 @@ int main(int argl, char** argv) {
     glm::mat4 projection(1.0);
     
     view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
+    
+    std::cout << "[INFO]: Initialization Complete. Entering main loop." << std::endl;
     
     glfwShowWindow(window);
     while (!glfwWindowShouldClose(window)) {
