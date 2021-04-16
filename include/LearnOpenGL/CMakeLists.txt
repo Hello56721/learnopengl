@@ -4,4 +4,5 @@ target_sources(
     "shader-class.hpp"
     "camera-class.hpp"
     "vertex-struct.hpp"
+    "texture-struct.hpp"
 )
