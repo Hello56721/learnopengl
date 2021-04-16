@@ -143,6 +143,9 @@ int main(int argl, char** argv) {
     // ###################################################################################################
     // ###################################################################################################
     
+    // Flip it so that the textures aren't upside down
+    stbi_set_flip_vertically_on_load(true);
+    
     unsigned int texture;
     glCall(glGenTextures, 1, &texture);
     glCall(glBindTexture, GL_TEXTURE_2D, texture);
@@ -169,7 +172,7 @@ int main(int argl, char** argv) {
     
     unsigned int texture2;
     glCall(glGenTextures, 1, &texture2);
-    glCall(glBindTexture, GL_TEXTURE_2D, texture);
+    glCall(glBindTexture, GL_TEXTURE_2D, texture2);
     
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -177,16 +180,21 @@ int main(int argl, char** argv) {
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     
     // Load the face texture
-    data = stbi_load("../textures/container.jpg", &width, &height, &nrChannels, 0);
+    int width2, height2, nrChannels2;
+    unsigned char* data2 = stbi_load("../textures/awesomeface.png", &width2, &height2, &nrChannels2, 0);
     // Check if the data is valid
     if (data == nullptr) {
-        std::cerr << "[ERROR]: Couldn't find or load ../textures/container.jpg" << std::endl;
+        std::cerr << "[ERROR]: Couldn't find or load ../textures/awesomeface.png" << std::endl;
     } else {
-        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
         glCall(glGenerateMipmap, GL_TEXTURE_2D);
     }
     
-    stbi_image_free(data);
+    stbi_image_free(data2);
+    
+    shader.use();
+    shader.setUniform("texture1", 0);
+    shader.setUniform("texture2", 1);
     
     glm::mat4 model(1.0);
     glm::mat4 view(1.0);
@@ -207,16 +215,16 @@ int main(int argl, char** argv) {
         
         projection = glm::perspective(glm::radians(45.0), static_cast<double>(wWidth) / static_cast<double>(wHeight), 0.1, 100.0);
         
+        glCall(glActiveTexture, GL_TEXTURE0);
+        glCall(glBindTexture, GL_TEXTURE_2D, texture);
+        glCall(glActiveTexture, GL_TEXTURE1);
+        glCall(glBindTexture, GL_TEXTURE_2D, texture2);
+        
         shader.use();
         
         shader.setUniform("model", model);
         shader.setUniform("view", view);
         shader.setUniform("projection", projection);
-        
-        glCall(glActiveTexture, GL_TEXTURE0);
-        glCall(glBindTexture, GL_TEXTURE_2D, texture);
-        glCall(glActiveTexture, GL_TEXTURE1);
-        glCall(glBindTexture, GL_TEXTURE_2D, texture2);
         
         glCall(glBindVertexArray, vao);
         glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
