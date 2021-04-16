@@ -4,4 +4,5 @@ target_sources(
     "opengl-debug.cpp"
     "shader-class.cpp"
     "stb_image.c"
+    "camera-class.cpp"
 )
