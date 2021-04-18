@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <random>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -293,6 +294,31 @@ int main(int argl, char** argv) {
     
     stbi_image_free(data2);
     
+    // Set up the random engine stuff
+    long seed;
+    std::random_device device;
+    if (device.entropy() == 0) {
+        seed = time(0);
+    } else {
+        seed = device();
+    }
+    std::mt19937 randomEngine(seed);
+    
+    // Generate a random vector of 1000 random cube positions and rotations
+    std::vector<glm::vec3> cubePositions;
+    std::vector<float> cubeRotations;
+    std::uniform_int_distribution<long> positionsRandomDistribution(-100, 100);
+    std::uniform_real_distribution<float> rotationsRandomDistribution(-180, 180);
+    for (unsigned int i = 0; i < 3000; i++) {
+        glm::vec3 position;
+        position.x = positionsRandomDistribution(randomEngine);
+        position.y = positionsRandomDistribution(randomEngine);
+        position.z = positionsRandomDistribution(randomEngine);
+        cubePositions.push_back(position);
+        
+        cubeRotations.push_back(rotationsRandomDistribution(randomEngine));
+    }
+    
     shader.use();
     shader.setUniform("texture1", 0);
     shader.setUniform("texture2", 1);
@@ -316,7 +342,7 @@ int main(int argl, char** argv) {
         
         glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        projection = glm::perspective(glm::radians(45.0), static_cast<double>(wWidth) / static_cast<double>(wHeight), 0.1, 100.0);
+        projection = glm::perspective(glm::radians(45.0), static_cast<double>(wWidth) / static_cast<double>(wHeight), 0.1, 10000.0);
         
         view = camera.lookAt();
         
@@ -333,7 +359,15 @@ int main(int argl, char** argv) {
         
         glCall(glBindVertexArray, vao);
         //glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        glCall(glDrawArrays, GL_TRIANGLES, 0, (sizeof(positions) / sizeof(float)) / 3);
+        for (unsigned int i = 0; i < 3000; i++) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            model = glm::rotate(model, glm::radians(cubeRotations[i]), glm::vec3(0.5f, 1.0f, 0.3f));
+            
+            shader.setUniform("model", model);
+            
+            glCall(glDrawArrays, GL_TRIANGLES, 0, (sizeof(positions) / sizeof(float)) / 3);
+        }
         
         glfwSwapBuffers(window);
         glfwPollEvents();
