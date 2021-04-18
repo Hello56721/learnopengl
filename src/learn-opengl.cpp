@@ -28,6 +28,8 @@ struct {
 unsigned int wWidth;
 unsigned int wHeight;
 
+float movementSpeed = 2.5f;
+
 static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 static void mouseCallback(GLFWwindow* window, double xoffset, double yoffset);
@@ -342,7 +344,7 @@ int main(int argl, char** argv) {
         
         glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        projection = glm::perspective(glm::radians(45.0), static_cast<double>(wWidth) / static_cast<double>(wHeight), 0.1, 10000.0);
+        projection = glm::perspective(glm::radians(45.0), static_cast<double>(wWidth) / static_cast<double>(wHeight), 0.1, 1000000.0);
         
         view = camera.lookAt();
         
@@ -396,7 +398,13 @@ void handleInput(GLFWwindow* window) {
         glfwSetWindowShouldClose(window, true);
     }
     
-    float movementSpeed = 2.5f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
+        movementSpeed = 15.0f;
+    }
+    if (!glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
+        movementSpeed = 2.5f;
+    }
+    
     if (glfwGetKey(window, GLFW_KEY_W)) {
         camera.translate(movementSpeed * deltaTime, Camera::Direction::Forward);
     }
