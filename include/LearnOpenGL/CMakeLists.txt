@@ -3,6 +3,4 @@ target_sources(
     "opengl-debug.hpp"
     "shader-class.hpp"
     "camera-class.hpp"
-    "vertex-struct.hpp"
-    "texture-struct.hpp"
 )
