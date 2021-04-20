@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 struct Vertex {
-    glm::vec3 positon;
+    glm::vec3 position;
     glm::vec3 normal;
     glm::vec3 texture_coordinate;
 };
