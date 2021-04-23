@@ -22,6 +22,7 @@ std::vector<std::string> commandLineArguments;
 // A struct containing all of the executable options
 struct {
     bool windowed = false;
+    std::string resource_path = "./";
 } options;
 
 // The window's width and height
@@ -58,6 +59,9 @@ int main(int argl, char** argv) {
     for (std::vector<std::string>::iterator i = commandLineArguments.begin(); i != commandLineArguments.end(); i++) {
         if (*i == "--windowed") {
             options.windowed = true;
+        }
+        if (*i == "--resource-path") {
+            options.resource_path = *(i + 1);
         }
     }
     
@@ -210,7 +214,7 @@ int main(int argl, char** argv) {
         0, 3, 2
     };
     
-    Shader shader("../shaders/basic/vertex.glsl", "../shaders/basic/fragment.glsl");
+    Shader shader(options.resource_path + "shaders/basic/vertex.glsl", options.resource_path + "shaders/basic/fragment.glsl");
     
     // Data
     // ###################################################################################################
@@ -261,10 +265,11 @@ int main(int argl, char** argv) {
     
     // Load the container texture
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("../textures/container.jpg", &width, &height, &nrChannels, 0);
+    std::string texturePath = options.resource_path + "textures/container.jpg";
+    unsigned char* data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
     // Check if the data is valid
     if (data == nullptr) {
-        std::cerr << "[ERROR]: Couldn't find or load ../textures/container.jpg" << std::endl;
+        std::cerr << "[ERROR]: Couldn't find or load textures/container.jpg" << std::endl;
     } else {
         glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glCall(glGenerateMipmap, GL_TEXTURE_2D);
@@ -285,10 +290,11 @@ int main(int argl, char** argv) {
     
     // Load the face texture
     int width2, height2, nrChannels2;
-    unsigned char* data2 = stbi_load("../textures/awesomeface.png", &width2, &height2, &nrChannels2, 0);
+    texturePath = options.resource_path + "textures/awesomeface.png";
+    unsigned char* data2 = stbi_load(texturePath.c_str(), &width2, &height2, &nrChannels2, 0);
     // Check if the data is valid
     if (data == nullptr) {
-        std::cerr << "[ERROR]: Couldn't find or load ../textures/awesomeface.png" << std::endl;
+        std::cerr << "[ERROR]: Couldn't find or load textures/awesomeface.png" << std::endl;
     } else {
         glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
         glCall(glGenerateMipmap, GL_TEXTURE_2D);
