@@ -75,6 +75,8 @@ int main(int argl, char** argv) {
     
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     
+    glfwWindowHint(GLFW_SAMPLES, 4);
+    
     GLFWmonitor* monitor = nullptr;
     const GLFWvidmode* videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     
@@ -102,6 +104,7 @@ int main(int argl, char** argv) {
     }
     
     glCall(glEnable, GL_DEPTH_TEST);
+    glCall(glEnable, GL_MULTISAMPLE);
     
     std::cout << "[INFO]: Window has been created. Using OpenGL " << glCallR(glGetString, GL_VERSION) << std::endl;
     
