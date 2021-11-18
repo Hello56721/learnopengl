@@ -1,7 +1,7 @@
 #include "camera-class.hpp"
 
 Camera::Camera(glm::vec3 pPosition, glm::vec3 pWorldUp, float pYaw, float pPitch):
-mPosition(pPosition), mYaw(pYaw), mPitch(pPitch), mWorldUp(pWorldUp) {
+mPosition(pPosition), mWorldUp(pWorldUp), mYaw(pYaw), mPitch(pPitch) {
     recalculateVectors();
 }
 
