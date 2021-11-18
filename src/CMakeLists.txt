@@ -1,5 +1,5 @@
 target_sources(
-    "learn-opengl" PRIVATE 
+    "learnopengl" PRIVATE 
     
     "learn-opengl.cpp"
     "opengl-debug.cpp"
