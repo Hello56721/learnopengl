@@ -1,5 +1,5 @@
 
-#include <LearnOpenGL/shader-class.hpp>
+#include "shader-class.hpp"
 
 Shader::Shader(std::string_view vertexPath, std::string_view fragmentPath) {
     // Load the vertex shader

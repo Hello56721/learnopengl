@@ -11,9 +11,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <LearnOpenGL/opengl-debug.hpp>
-#include <LearnOpenGL/shader-class.hpp>
-#include <LearnOpenGL/camera-class.hpp>
+#include "opengl-debug.hpp"
+#include "shader-class.hpp"
+#include "camera-class.hpp"
 
 // A vector of command line options
 extern std::vector<std::string> commandLineArguments;
