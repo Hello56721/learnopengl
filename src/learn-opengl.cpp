@@ -15,6 +15,8 @@
 #include "shader-class.hpp"
 #include "camera-class.hpp"
 
+#include <unistd.h>
+
 // A vector of command line options
 extern std::vector<std::string> commandLineArguments;
 std::vector<std::string> commandLineArguments;
@@ -53,6 +55,17 @@ int main(int argl, char** argv) {
     for (unsigned int i = 0; i < argl; ++i) {
         commandLineArguments.push_back(argv[i]);
     }
+    
+    #ifdef LEARNOPENGL_SYSTEM_LINUX
+    char programName[512];
+    readlink("/proc/self/exe", programName, 512);
+    
+    std::string programNameString(programName);
+    std::string programLocation = programNameString.substr(0, programNameString.find_last_of('/'));
+    
+    chdir(programLocation.data());
+    std::cout << "[INFO]: CWD changed to " << programLocation << std::endl;
+    #endif
     
     // Process all of the command line arguments
     for (std::vector<std::string>::iterator i = commandLineArguments.begin(); i != commandLineArguments.end(); i++) {

@@ -25,6 +25,14 @@ if (UNIX AND NOT APPLE)
     set(CMAKE_EXECUTABLE_SUFFIX .out)
 endif()
 
+if (UNIX AND NOT APPLE)
+    add_compile_definitions(LEARNOPENGL_SYSTEM_LINUX)
+elseif(WIN32)
+    add_compile_definitions(LEARNOPENGL_SYSTEM_WINDOWS)
+elseif(APPLE)
+    add_compile_definitions(LEARNOPENGL_SYSTEM_APPLE)
+endif()
+
 # Tell CMake where to find the scripts to find the depedencies
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
