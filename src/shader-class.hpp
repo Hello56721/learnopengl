@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-#include <LearnOpenGL/opengl-debug.hpp>
+#include "opengl-debug.hpp"
 
 #include <iostream>
 #include <sstream>
