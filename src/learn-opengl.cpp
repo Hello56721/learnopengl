@@ -50,6 +50,8 @@ float lastY;
 
 bool firstMouse = true;
 
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
 int main(int argl, char** argv) {
     // Put all of the command line arguments in a vector
     for (unsigned int i = 0; i < argl; ++i) {
@@ -102,7 +104,7 @@ int main(int argl, char** argv) {
         wHeight = videoMode->height / 2;
     }
     
-    GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, "LearnOpenGL", monitor, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "LearnOpenGL", nullptr, nullptr);
     if (window == nullptr) {
         std::cerr << "[FATAL ERROR]: Failed to initialize GLFW. Program will now terminate." << std::endl;
         glfwTerminate();
@@ -120,9 +122,6 @@ int main(int argl, char** argv) {
     glCall(glEnable, GL_MULTISAMPLE);
     
     std::cout << "[INFO]: Window has been created. Using OpenGL " << glCallR(glGetString, GL_VERSION) << std::endl;
-    
-    // Capture the mouse pointer
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetCursorPosCallback(window, mouseCallback);
@@ -228,6 +227,10 @@ int main(int argl, char** argv) {
     
     Shader shader("../shaders/basic/vertex.glsl", "../shaders/basic/fragment.glsl");
     
+    Shader lightingShader("../shaders/lighted/vertex.glsl", "../shaders/lighted/fragment.glsl");
+    
+    Shader lightShader("../shaders/light/vertex.glsl", "../shaders/light/fragment.glsl");
+    
     // Data
     // ###################################################################################################
     // ###################################################################################################
@@ -257,6 +260,15 @@ int main(int argl, char** argv) {
     
     glCall(glVertexAttribPointer, 1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glCall(glEnableVertexAttribArray, 1);
+    
+    unsigned int lightVAO = 0;
+    glCall(glGenVertexArrays, 1, &lightVAO);
+    glCall(glBindVertexArray, lightVAO);
+    
+    glCall(glBindBuffer, GL_ARRAY_BUFFER, vboPos);
+    
+    glCall(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glCall(glEnableVertexAttribArray, 0);
     
     // Textures
     // ###################################################################################################
@@ -353,6 +365,10 @@ int main(int argl, char** argv) {
     // ###################################################################################################
     
     glfwShowWindow(window);
+    
+    // Capture the mouse pointer
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
     while (!glfwWindowShouldClose(window)) {
         startTime = glfwGetTime();
         
@@ -369,23 +385,33 @@ int main(int argl, char** argv) {
         glCall(glActiveTexture, GL_TEXTURE1);
         glCall(glBindTexture, GL_TEXTURE_2D, texture2);
         
-        shader.use();
+        model = glm::mat4(1.0);
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(0.2));
         
-        shader.setUniform("model", model);
-        shader.setUniform("view", view);
-        shader.setUniform("projection", projection);
+        lightShader.use();
+        lightShader.setUniform("model", model);
+        lightShader.setUniform("view", view);
+        lightShader.setUniform("projection", projection);
+        
+        glCall(glBindVertexArray, lightVAO);
+        glCall(glDrawArrays, GL_TRIANGLES, 0, 36);
+        glCall(glBindVertexArray, 0);
+        
+        model = glm::mat4(1.0);
+        
+        lightingShader.use();
+        
+        lightingShader.setUniform("model", model);
+        lightingShader.setUniform("view", view);
+        lightingShader.setUniform("projection", projection);
+        
+        lightingShader.setUniform("objectColor", 1.0, 0.5, 0.31);
+        lightingShader.setUniform("lightColor", 1.0, 1.0, 1.0);
         
         glCall(glBindVertexArray, vao);
-        //glCall(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        for (unsigned int i = 0; i < 3000; i++) {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            model = glm::rotate(model, glm::radians(cubeRotations[i]), glm::vec3(0.5f, 1.0f, 0.3f));
-            
-            shader.setUniform("model", model);
-            
-            glCall(glDrawArrays, GL_TRIANGLES, 0, (sizeof(positions) / sizeof(float)) / 3);
-        }
+        glCall(glDrawArrays, GL_TRIANGLES, 0, 36);
+        glCall(glBindVertexArray, 0);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
