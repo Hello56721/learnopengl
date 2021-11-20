@@ -474,8 +474,8 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
     lastX = xpos;
     lastY = ypos;
     
-    xoffset = xoffset * 2.5f * deltaTime;
-    yoffset = yoffset * 2.5f * deltaTime;
+    yoffset = yoffset * 5.0f * deltaTime;
+    xoffset = xoffset * 5.0f * deltaTime;
     
     camera.rotate(xoffset, yoffset, true);
 }
