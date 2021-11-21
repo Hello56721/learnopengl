@@ -29,6 +29,7 @@ public:
     void setUniform(std::string_view name, int value) const ;
     void setUniform(std::string_view name, float value) const;
     void setUniform(std::string_view name, glm::mat4 value) const;
+    void setUniform(std::string_view name, glm::vec3 value) const;
     void setUniform(std::string_view name, float x, float y, float z) const;
     // Getter for the id
     unsigned int getID() const;

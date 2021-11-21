@@ -122,6 +122,10 @@ void Shader::setUniform(std::string_view name, glm::mat4 value) const {
     glCall(glUniformMatrix4fv, glCallR(glGetUniformLocation, mID, name.data()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setUniform(std::string_view name, glm::vec3 value) const {
+    glCall(glUniform3fv, glCallR(glGetUniformLocation, mID, name.data()), 1, glm::value_ptr(value));
+}
+
 void Shader::setUniform(std::string_view name, float x, float y, float z) const
 {
     glCall(glUniform3f, glCallR(glGetUniformLocation, mID, name.data()), x, y, z);
