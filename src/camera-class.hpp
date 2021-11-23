@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 class Camera {
-private:
+public:
     glm::vec3 mPosition;
     glm::vec3 mDirection;
     glm::vec3 mRight;
@@ -15,7 +15,6 @@ private:
     float mYaw;
     float mPitch;
     
-public:
     // The direction
     enum class Direction {
         Forward, Backward, Left, Right
