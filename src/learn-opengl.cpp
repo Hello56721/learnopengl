@@ -349,6 +349,12 @@ int main(int argl, char** argv) {
         glCall(glActiveTexture, GL_TEXTURE1);
         glCall(glBindTexture, GL_TEXTURE_2D, texture2);
         
+        double lightX = sin(glm::radians(glfwGetTime() * 10)) * 3;
+        double lightY = 0.0;
+        double lightZ = cos(glm::radians(glfwGetTime() * 10)) * 3;
+        
+        lightPos = glm::vec3(lightX, lightY, lightZ);
+        
         model = glm::mat4(1.0);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2));
@@ -373,6 +379,7 @@ int main(int argl, char** argv) {
         lightingShader.setUniform("objectColor", 1.0, 0.5, 0.31);
         lightingShader.setUniform("lightColor", 1.0, 1.0, 1.0);
         lightingShader.setUniform("lightPosition", lightPos);
+        lightingShader.setUniform("viewPosition", camera.mPosition);
         
         glCall(glBindVertexArray, vao);
         glCall(glDrawArrays, GL_TRIANGLES, 0, 36);
