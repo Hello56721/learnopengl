@@ -18,7 +18,12 @@
 #include "shader-class.hpp"
 #include "camera-class.hpp"
 
+#ifdef LEARNOPENGL_SYSTEM_LINUX
 #include <unistd.h>
+#endif
+#ifdef LEARNOPENGL_SYSTEM_WINDOWS
+#include <windows.h>
+#endif
 
 // A vector of command line options
 extern std::vector<std::string> commandLineArguments;
@@ -324,7 +329,12 @@ int main(int argl, char** argv) {
         while (isRunning)
         {
             std::cout << "[FPS]: " << 1.0 / deltaTime << std::endl;
+            #ifdef LEARNOPENGL_SYSTEM_LINUX
             sleep(1);
+            #endif
+            #ifdef LEARNOPENGL_SYSTEM_WINDOWS
+            _sleep(1);
+            #endif
         }
     });
     
