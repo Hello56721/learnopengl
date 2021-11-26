@@ -42,6 +42,15 @@ CMakeCache.txt
 build.ninja
 rules.ninja
 
+# MSVC Clutters
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.tlog
+*.lib.recipe
+*.pdb
+ZERO_CHECK.recipe
+
 # Visual Studio Code user specific configuration files
 .vscode/c_cpp_properties.json
 .vscode/tasks.json
